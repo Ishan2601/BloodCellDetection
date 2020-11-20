@@ -1,8 +1,5 @@
 %{
-Name: Ishan Vatsaraj
-Roll No.: 18105A0036
-Experiment No.: 5
-Experiment Title: Blood Cell Counter using Image Processing
+Author: Ishan Vatsaraj
 %}
 
 %% Read and show original Image

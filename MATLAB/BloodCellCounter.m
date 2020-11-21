@@ -4,7 +4,7 @@ Author: Ishan Vatsaraj
 
 %% Read and show original Image
 
-img = imread('bloodcell.jpg');
+img = imread('../images/bloodcell.jpg');
 figure;
 subplot(4,2,1);
 imshow(img);

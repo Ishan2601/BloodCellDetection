@@ -28,10 +28,12 @@ imshow(blue);
 %% Segment WBC Nucleas from RED channel
 
 [w,h]=size(red);
+wbc = zeros([w h]);
 for i=1:w
    for j=1:h
       if red(i,j)<140
           red(i,j)=255;
+          wbc(i,j)=255;
       end
    end
 end
@@ -39,7 +41,9 @@ end
 w_nuc = imbinarize(red);
 subplot(4,2,5);
 imshow(w_nuc);
-
+wbc = imopen(wbc, strel('disk',2));
+wbc = imclose(wbc, strel('disk',3));
+imshow(wbc);
 %% Segment RBC from BLUE channel
 
 [w,h]=size(blue);
@@ -69,8 +73,15 @@ imshow(inv_rbc_clean);
 %% Count the circles in the image and Highlight them
 figure;
 imshow(img);
-[centers, radii, metric] = imfindcircles(inv_rbc_clean,[7 10],'ObjectPolarity','bright','Sensitivity',0.95,'Method','twostage');
-h = viscircles(centers,radii);
+hold on;
+% Count number of RBC
+[rcenters, rradii, rmetric] = imfindcircles(inv_rbc_clean,[8 10],'ObjectPolarity','bright','Sensitivity',0.95,'Method','twostage');
+rh = viscircles(rcenters,rradii, 'Color', 'r');
 
-[m,n]=size(centers);
-disp(m); %RBC COUNT
+[rm,rn]=size(rcenters);
+fprintf('Number of RBC: %d\n', rm) %RBC COUNT
+
+% Count number of WBC
+[B,L] = bwboundaries(wbc);
+visboundaries(B, 'Color','b');
+fprintf('Number of WBC: %d', length(B));%WBC COUNT

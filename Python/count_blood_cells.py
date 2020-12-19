@@ -41,15 +41,26 @@ print(f'Approximate number of RBC: {rbc_count}')
 cv2.drawContours(image, multiple_cells, -1, (0, 0, 255), 3)
 cv2.drawContours(image, rbc, -1, (0, 0, 255), 3)
 
+
+# Set the thresholds for WBC Detection
 wlower = np.array([120, 50, 20])
 wupper = np.array([140, 255, 255])
 
+# Find the colors within the specified boundaries and apply the mask
 wmask = cv2.inRange(img, wlower, wupper)
 
+# Find the contours
 wcontours, hierarchy = cv2.findContours(wmask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+
+# Count and segment the WBC's
 cv2.drawContours(image, wcontours, -1, (255, 0, 0), 3)
 wbc_count = len(wcontours)
+
+# Print the count
 print(f'Approximate number of WBC: {wbc_count}')
+
+# Write the output in a file
+cv2.imwrite('op.jpg', image)
 
 # Display the Image
 while True:
